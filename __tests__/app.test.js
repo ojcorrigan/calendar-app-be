@@ -23,9 +23,12 @@ describe('postUsers', () => {
 	test('201: api/users responds with the new users details returned', () => {
 		return request(app)
 			.post('/api/users')
+			.send({ username: 'Owen', name: 'OJ', password: '1234' })
 			.expect(201)
 			.then((res) => {
-				expect(res.body);
+				console.log(res.body);
+				expect(res.body.user.username).toBe('Owen');
+				expect(res.body.user.name).toBe('OJ');
 			});
 	});
 });

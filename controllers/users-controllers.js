@@ -10,5 +10,5 @@ exports.getUsers = (req, res, next) => {
 
 exports.postUser = (req, res, next) => {
 	const userInfo = req.body;
-	insertUser(userInfo).then((newUser) => res.send({ newUser }));
+	insertUser(userInfo).then((user) => res.status(201).send(user));
 };

@@ -6,7 +6,8 @@
 	"scripts": {
 		"test": "jest",
 		"start": "node listen.js",
-		"setup-db": "psql -f db/calendar_app.sql"
+		"setup-db": "psql -f db/calendar_app.sql",
+		"seed": "node ./db/seeds/run-seed.js"
 	},
 	"repository": {
 		"type": "git",

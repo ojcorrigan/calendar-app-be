@@ -6,13 +6,16 @@ exports.selectUsers = () => {
 	});
 };
 
-exports.postUser = (newUser) => {
-	const { username, given_name, pass_word } = newUser;
+exports.insertUser = (newUser) => {
+	const { username, name, password } = newUser;
 
 	return db
 		.query(
-			'INSERT INTO users (username, given_name, pass_word) VALUES ($1, $2, $3) RETURNING *;',
-			[username, given_name, pass_word]
+			'INSERT INTO users (username, name, password) VALUES ($1, $2, $3) RETURNING *',
+			[username, name, password]
 		)
-		.then(({ users }) => users[0]);
+		.then((result) => {
+			console.log(result.rows);
+			return { user: result.rows[0] };
+		});
 };
