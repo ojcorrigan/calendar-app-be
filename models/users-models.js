@@ -15,7 +15,18 @@ exports.insertUser = (newUser) => {
 			[username, name, password]
 		)
 		.then((result) => {
-			console.log(result.rows);
 			return { user: result.rows[0] };
+		});
+};
+
+exports.updateUser = (userInfo, username) => {
+	const { name } = userInfo;
+	return db
+		.query('UPDATE users SET name = $1 WHERE username = $2 RETURNING *', [
+			name,
+			username,
+		])
+		.then((results) => {
+			return results.rows[0];
 		});
 };
