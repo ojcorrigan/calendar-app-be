@@ -1,6 +1,7 @@
 const userRouter = require('express').Router();
 const {
 	getUsers,
+	getUserById,
 	postUser,
 	patchUser,
 	deleteUser,
@@ -8,6 +9,7 @@ const {
 
 userRouter
 	.get('/', getUsers)
+	.get('/:username', getUserById)
 	.post('/', postUser)
 	.patch('/:username', patchUser)
 	.delete('/:username', deleteUser);

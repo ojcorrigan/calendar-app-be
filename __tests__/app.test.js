@@ -19,6 +19,17 @@ describe('user tests', () => {
 		});
 	});
 
+	describe('getUserById', () => {
+		test('200: api/users/:id responds with a 200 code and a user object', () => {
+			return request(app)
+				.get('/api/users/rogersop')
+				.expect(200)
+				.then((res) => {
+					console.log(res.body);
+				});
+		});
+	});
+
 	describe('postUsers', () => {
 		test('201: api/users responds with the new users details returned', () => {
 			return request(app)
@@ -67,6 +78,24 @@ describe('error testing', () => {
 				.expect(404)
 				.then((res) => {
 					expect(res.body.msg).toBe('invalid path');
+				});
+		});
+		test('404: PATCH api/users/OJ user not found', () => {
+			return request(app)
+				.patch('/api/users/OJ')
+				.expect(404)
+				.send({ name: 'OJ' })
+				.then((res) => {
+					expect(res.body.msg).toBe('user not found');
+				});
+		});
+		test('400: PATCH api/users returns bad request when given nothing to update', () => {
+			return request(app)
+				.patch('/api/users/butter_bridge')
+				.send({})
+				.expect(400)
+				.then((res) => {
+					expect(res.body.msg).toBe('bad request');
 				});
 		});
 	});
