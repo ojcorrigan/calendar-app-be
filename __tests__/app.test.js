@@ -42,23 +42,52 @@ describe('user tests', () => {
 				});
 		});
 	});
+	describe('deleteUser', () => {
+		test('200 ok: api/users/:username responds with with ok and no user data', () => {
+			return request(app).delete('/api/users/butter_bridge').expect(204);
+		});
+	});
 });
 
 describe('error testing', () => {
-	test('404: GET api/user/ returns 404 not found', () => {
-		return request(app)
-			.get('/api/user')
-			.expect(404)
-			.then((res) => {
-				expect(res.body.msg).toBe('invalid path');
-			});
+	describe('GET user errors', () => {
+		test('404: GET api/user/ returns 404 not found', () => {
+			return request(app)
+				.get('/api/user')
+				.expect(404)
+				.then((res) => {
+					expect(res.body.msg).toBe('invalid path');
+				});
+		});
 	});
-	test('404: PATCH api/user/ returns 404 not found', () => {
-		return request(app)
-			.patch('/api/user/butter_bridge')
-			.expect(404)
-			.then((res) => {
-				expect(res.body.msg).toBe('invalid path');
-			});
+	describe('PATCH user errors', () => {
+		test('404: PATCH api/user/ returns 404 not found', () => {
+			return request(app)
+				.patch('/api/user/butter_bridge')
+				.expect(404)
+				.then((res) => {
+					expect(res.body.msg).toBe('invalid path');
+				});
+		});
+	});
+	describe('POST user errors', () => {
+		test('400 POST api/users/ returns 400 with information missing', () => {
+			return request(app)
+				.post('/api/users')
+				.send({ name: 'Owen', password: 'password' })
+				.expect(400)
+				.then((res) => {
+					expect(res.body.msg).toBe('bad request');
+				});
+		});
+		test('400 POST api/users/ returns bad request, duplicate username', () => {
+			return request(app)
+				.post('/api/users')
+				.send({ username: 'butter_bridge', name: 'Owen', password: 'password' })
+				.expect(400)
+				.then((res) => {
+					expect(res.body.msg).toBe('bad request');
+				});
+		});
 	});
 });

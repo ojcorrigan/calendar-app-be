@@ -9,14 +9,18 @@ exports.selectUsers = () => {
 exports.insertUser = (newUser) => {
 	const { username, name, password } = newUser;
 
-	return db
-		.query(
-			'INSERT INTO users (username, name, password) VALUES ($1, $2, $3) RETURNING *',
-			[username, name, password]
-		)
-		.then((result) => {
-			return { user: result.rows[0] };
-		});
+	if (!username || !name || !password) {
+		return Promise.reject({ status: 400, msg: 'bad request' });
+	} else {
+		return db
+			.query(
+				'INSERT INTO users (username, name, password) VALUES ($1, $2, $3) RETURNING *',
+				[username, name, password]
+			)
+			.then((result) => {
+				return { user: result.rows[0] };
+			});
+	}
 };
 
 exports.updateUser = (userInfo, username) => {
@@ -28,5 +32,13 @@ exports.updateUser = (userInfo, username) => {
 		])
 		.then((results) => {
 			return results.rows[0];
+		});
+};
+
+exports.removeUser = (username) => {
+	return db
+		.query('DELETE FROM users WHERE username = $1 RETURNING *;', [username])
+		.then((res) => {
+			return res.rows;
 		});
 };

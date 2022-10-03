@@ -4,6 +4,8 @@ const cors = require('cors');
 
 const { invalidPath } = require('./controllers/invalid-path-controller');
 
+const { customError, psqlErrors } = require('./controllers/error-controllers');
+
 const apiRouter = require('./routes/api-router');
 
 app.use(cors());
@@ -13,6 +15,10 @@ app.use(express.json());
 app.use('/api', apiRouter);
 
 app.all('*', invalidPath);
+
+app.use(customError);
+
+app.use(psqlErrors);
 
 app.use((err, req, res, next) => {
 	console.log(err);
