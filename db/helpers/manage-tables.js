@@ -8,11 +8,21 @@ const createTables = async () => {
     password VARCHAR
   );`);
 
-	await Promise.all([usersTablePromise]);
+	await usersTablePromise;
+
+	await db.query(`
+  CREATE TABLE events (
+    event_id SERIAL PRIMARY KEY,
+    title VARCHAR NOT NULL,
+    description VARCHAR,
+    author VARCHAR NOT NULL REFERENCES users(username),
+    created_at TIMESTAMP DEFAULT NOW()
+  );`);
 };
 
 const dropTables = async () => {
-	await db.query(`DROP TABLE IF EXISTS users;`);
+	await db.query(`DROP TABLE IF EXISTS events;`);
+	await db.query(`DROP TABLE IF EXISTS users cascade;`);
 };
 
 module.exports = { createTables, dropTables };

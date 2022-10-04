@@ -25,7 +25,7 @@ describe('user tests', () => {
 				.get('/api/users/rogersop')
 				.expect(200)
 				.then((res) => {
-					console.log(res.body);
+					expect(res.body.user.name).toBe('paul');
 				});
 		});
 	});
@@ -56,6 +56,19 @@ describe('user tests', () => {
 	describe('deleteUser', () => {
 		test('200 ok: api/users/:username responds with with ok and no user data', () => {
 			return request(app).delete('/api/users/butter_bridge').expect(204);
+		});
+	});
+});
+
+describe('events tests', () => {
+	describe('GET events', () => {
+		test.only('200 returns a list of events from the events table', () => {
+			return request(app)
+				.get('/api/events')
+				.expect(200)
+				.then((res) => {
+					console.log(res.body);
+				});
 		});
 	});
 });
