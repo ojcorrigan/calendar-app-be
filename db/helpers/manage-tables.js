@@ -16,6 +16,8 @@ const createTables = async () => {
     title VARCHAR NOT NULL,
     description VARCHAR,
     author VARCHAR NOT NULL REFERENCES users(username),
+    date VARCHAR NOT NULL,
+    time VARCHAR NOT NULL,
     created_at TIMESTAMP DEFAULT NOW()
   );`);
 };

@@ -62,9 +62,26 @@ describe('user tests', () => {
 
 describe('events tests', () => {
 	describe('GET events', () => {
-		test.only('200 returns a list of events from the events table', () => {
+		test('200 returns a list of events from the events table', () => {
 			return request(app)
 				.get('/api/events')
+				.expect(200)
+				.then((res) => {
+					console.log(res.body);
+				});
+		});
+	});
+	describe('POST events', () => {
+		test('200 returns a list of events from the events table', () => {
+			return request(app)
+				.post('/api/events')
+				.send({
+					author: 'rogersop',
+					title: 'test event',
+					description: 'this is an event for my tests',
+					date: '01/02/20',
+					time: '12:30',
+				})
 				.expect(200)
 				.then((res) => {
 					console.log(res.body);
@@ -129,6 +146,22 @@ describe('error testing', () => {
 				.expect(400)
 				.then((res) => {
 					expect(res.body.msg).toBe('bad request');
+				});
+		});
+	});
+	describe('POST event errors', () => {
+		test('400 POST api/events/ missing info returns 400 bad request', () => {
+			return request(app)
+				.post('/api/events')
+				.send({
+					title: 'error test',
+					description: 'test',
+					date: '20/10/20',
+					time: '23:00',
+				})
+				.expect(400)
+				.then((res) => {
+					expect(res.body.msg).toBe('information missing');
 				});
 		});
 	});
