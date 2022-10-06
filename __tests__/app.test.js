@@ -82,9 +82,24 @@ describe('events tests', () => {
 					date: '01/02/20',
 					time: '12:30',
 				})
-				.expect(200)
+				.expect(201)
 				.then((res) => {
-					console.log(res.body);
+					expect(res.body.event.title).toBe('test event');
+				});
+		});
+	});
+	describe('PATCH events', () => {
+		test('200: responds with the updated event', () => {
+			return request(app)
+				.patch('/api/events/1')
+				.send({
+					description: 'This is the updated description from a patch event',
+				})
+				.expect(200)
+				.then((event) => {
+					// expect().toBe(
+					// 	'This is the updated description from a patch event'
+					// );
 				});
 		});
 	});

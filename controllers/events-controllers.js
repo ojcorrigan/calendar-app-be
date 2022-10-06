@@ -10,7 +10,7 @@ exports.postEvent = (req, res, next) => {
 	const eventInfo = req.body;
 	insertEvent(eventInfo)
 		.then((event) => {
-			res.status(200).send({ event });
+			res.status(201).send({ event });
 		})
 		.catch((err) => {
 			next(err);

@@ -17,7 +17,7 @@ exports.insertEvent = (eventInfo) => {
 				[author, title, description, date, time]
 			)
 			.then((event) => {
-				return event.rows;
+				return event.rows[0];
 			});
 	}
 };
