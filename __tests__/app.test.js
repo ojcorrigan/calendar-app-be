@@ -67,7 +67,7 @@ describe('events tests', () => {
 				.get('/api/events')
 				.expect(200)
 				.then((res) => {
-					console.log(res.body);
+					expect(res.body.events[0].title).toBe('test event');
 				});
 		});
 	});
@@ -97,9 +97,9 @@ describe('events tests', () => {
 				})
 				.expect(200)
 				.then((event) => {
-					// expect().toBe(
-					// 	'This is the updated description from a patch event'
-					// );
+					expect(event.body.event.description).toBe(
+						'This is the updated description from a patch event'
+					);
 				});
 		});
 	});

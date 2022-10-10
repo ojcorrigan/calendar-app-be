@@ -3,7 +3,7 @@ const db = require('../connection.js');
 
 const { dropTables, createTables } = require('../helpers/manage-tables.js');
 
-const seed = async ({ userData }) => {
+const seed = async ({ userData, eventsData }) => {
 	await dropTables();
 	await createTables();
 
@@ -19,7 +19,24 @@ const seed = async ({ userData }) => {
 		.query(insertUsersQueryStr)
 		.then((result) => result.rows);
 
-	await Promise.all([usersPromise]);
+	await usersPromise;
+
+	const insertEventsQueryStr = format(
+		'INSERT INTO events (author, description, title, date, time) VALUES %L RETURNING *;',
+		eventsData.map(({ author, description, title, date, time }) => [
+			author,
+			description,
+			title,
+			date,
+			time,
+		])
+	);
+
+	const eventsPromise = db
+		.query(insertEventsQueryStr)
+		.then((results) => results.rows);
+
+	await eventsPromise;
 };
 
 // const seed = () => {
