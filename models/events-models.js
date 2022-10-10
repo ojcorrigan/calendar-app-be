@@ -21,3 +21,23 @@ exports.insertEvent = (eventInfo) => {
 			});
 	}
 };
+
+exports.updateEvent = (eventInfo, event_id) => {
+	const { description, author } = eventInfo;
+	if (!description) {
+		return Promise.reject({ status: 400, msg: 'information missing' });
+	} else {
+		return db
+			.query(
+				'UPDATE events SET description = $1 WHERE event_id = $2 RETURNING *',
+				[description, event_id]
+			)
+			.then((event) => {
+				if (event.rows[0].author !== author) {
+					return Promise.reject({ status: 400, msg: 'incorrect user' });
+				}
+				console.log(event.rows[0]);
+				return event.rows[0];
+			});
+	}
+};

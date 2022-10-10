@@ -39,16 +39,4 @@ const seed = async ({ userData, eventsData }) => {
 	await eventsPromise;
 };
 
-// const seed = () => {
-// 	return db.query(`DROP TABLE IF EXISTS users cascade;`).then(() => {
-// 		return db.query(
-// 			`CREATE TABLE users (
-//           username VARCHAR PRIMARY KEY,
-//           name VARCHAR NOT NULL,
-//           password VARCHAR NOT NULL
-//         );`
-// 		);
-// 	});
-// };
-
 module.exports = seed;

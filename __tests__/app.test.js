@@ -94,9 +94,11 @@ describe('events tests', () => {
 				.patch('/api/events/1')
 				.send({
 					description: 'This is the updated description from a patch event',
+					author: 'icellusedkars',
 				})
 				.expect(200)
 				.then((event) => {
+					console.log(event.body);
 					expect(event.body.event.description).toBe(
 						'This is the updated description from a patch event'
 					);
@@ -177,6 +179,20 @@ describe('error testing', () => {
 				.expect(400)
 				.then((res) => {
 					expect(res.body.msg).toBe('information missing');
+				});
+		});
+	});
+	describe('PATCH events errors', () => {
+		test.only('400: user incorrect', () => {
+			return request(app)
+				.patch('/api/events/1')
+				.send({
+					description: 'This is the updated description from a patch event',
+					author: 'OJ',
+				})
+				.expect(400)
+				.then((event) => {
+					console.log(event.body);
 				});
 		});
 	});
