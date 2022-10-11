@@ -42,7 +42,11 @@ exports.patchUser = (req, res, next) => {
 exports.deleteUser = (req, res, next) => {
 	const { username } = req.params;
 
-	removeUser(username).then((user) => {
-		res.status(204).send(user);
-	});
+	removeUser(username)
+		.then((user) => {
+			res.status(204).send(user);
+		})
+		.catch((err) => {
+			next(err);
+		});
 };

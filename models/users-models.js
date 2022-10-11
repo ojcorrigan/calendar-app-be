@@ -56,6 +56,8 @@ exports.removeUser = (username) => {
 	return db
 		.query('DELETE FROM users WHERE username = $1 RETURNING *;', [username])
 		.then((res) => {
-			return res.rows;
+			if (!res.rows[0]) {
+				return Promise.reject({ status: 404, msg: 'event not found' });
+			} else return res.rows;
 		});
 };

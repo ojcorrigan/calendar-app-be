@@ -104,6 +104,11 @@ describe('events tests', () => {
 				});
 		});
 	});
+	describe('DELETE event', () => {
+		test('204 no content (as its been deleted', () => {
+			return request(app).delete('/api/events/1').expect(204);
+		});
+	});
 });
 
 describe('error testing', () => {
@@ -165,6 +170,21 @@ describe('error testing', () => {
 				});
 		});
 	});
+	describe('DELETE user errors', () => {
+		test('404 user not found', () => {
+			return request(app).delete('/api/users/POOOPOOO').expect(404);
+		});
+	});
+	describe('GET event errors', () => {
+		test('404 wrong endpoint used', () => {
+			request(app)
+				.get('/api/event')
+				.expect(404)
+				.then((status) => {
+					expect(status.body.msg).toBe('invalid path');
+				});
+		});
+	});
 	describe('POST event errors', () => {
 		test('400 POST api/events/ missing info returns 400 bad request', () => {
 			return request(app)
@@ -202,6 +222,11 @@ describe('error testing', () => {
 				.then((event) => {
 					expect(event.body.msg).toBe('event not found');
 				});
+		});
+	});
+	describe('DELETE events errors', () => {
+		test('404 event doesnt exist', () => {
+			return request(app).delete('/api/events/100').expect(404);
 		});
 	});
 });

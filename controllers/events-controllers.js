@@ -2,6 +2,7 @@ const {
 	selectEvents,
 	insertEvent,
 	updateEvent,
+	deleteEvent,
 } = require('../models/events-models');
 
 exports.getEvents = (req, res, next) => {
@@ -28,6 +29,18 @@ exports.patchEvent = (req, res, next) => {
 	updateEvent(eventInfo, event_id)
 		.then((event) => {
 			res.status(200).send({ event });
+		})
+		.catch((err) => {
+			next(err);
+		});
+};
+
+exports.removeEvent = (req, res, next) => {
+	const { event_id } = req.params;
+
+	deleteEvent(event_id)
+		.then((event) => {
+			res.status(204).send(event);
 		})
 		.catch((err) => {
 			next(err);
