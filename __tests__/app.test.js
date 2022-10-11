@@ -98,7 +98,6 @@ describe('events tests', () => {
 				})
 				.expect(200)
 				.then((event) => {
-					console.log(event.body);
 					expect(event.body.event.description).toBe(
 						'This is the updated description from a patch event'
 					);
@@ -183,16 +182,25 @@ describe('error testing', () => {
 		});
 	});
 	describe('PATCH events errors', () => {
-		test.only('400: user incorrect', () => {
+		test('404: wrong username sent', () => {
 			return request(app)
 				.patch('/api/events/1')
 				.send({
-					description: 'This is the updated description from a patch event',
 					author: 'OJ',
+					description: 'this is not updated',
 				})
-				.expect(400)
+				.expect(404)
 				.then((event) => {
-					console.log(event.body);
+					expect(event.body.msg).toBe('event not found');
+				});
+		});
+		test('404: incorrect event_id', () => {
+			return request(app)
+				.patch('/api/events/100')
+				.send({ author: 'OJ', description: 'testing, testing' })
+				.expect(404)
+				.then((event) => {
+					expect(event.body.msg).toBe('event not found');
 				});
 		});
 	});

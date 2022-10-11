@@ -29,15 +29,13 @@ exports.updateEvent = (eventInfo, event_id) => {
 	} else {
 		return db
 			.query(
-				'UPDATE events SET description = $1 WHERE event_id = $2 RETURNING *',
-				[description, event_id]
+				'UPDATE events SET description = $1 WHERE event_id = $2 and author = $3 RETURNING *',
+				[description, event_id, author]
 			)
 			.then((event) => {
-				if (event.rows[0].author !== author) {
-					return Promise.reject({ status: 400, msg: 'incorrect user' });
-				}
-				console.log(event.rows[0]);
-				return event.rows[0];
+				if (!event.rows[0]) {
+					return Promise.reject({ status: 404, msg: 'event not found' });
+				} else return event.rows[0];
 			});
 	}
 };

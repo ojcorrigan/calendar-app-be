@@ -25,7 +25,11 @@ exports.patchEvent = (req, res, next) => {
 	const { event_id } = req.params;
 	const eventInfo = req.body;
 
-	updateEvent(eventInfo, event_id).then((event) => {
-		res.status(200).send({ event });
-	});
+	updateEvent(eventInfo, event_id)
+		.then((event) => {
+			res.status(200).send({ event });
+		})
+		.catch((err) => {
+			next(err);
+		});
 };
