@@ -67,7 +67,7 @@ describe('events tests', () => {
 				.get('/api/events')
 				.expect(200)
 				.then((res) => {
-					console.log(res.body);
+					expect(res.body.events[0].title).toBe('test event');
 				});
 		});
 	});
@@ -94,12 +94,13 @@ describe('events tests', () => {
 				.patch('/api/events/1')
 				.send({
 					description: 'This is the updated description from a patch event',
+					author: 'icellusedkars',
 				})
 				.expect(200)
 				.then((event) => {
-					// expect().toBe(
-					// 	'This is the updated description from a patch event'
-					// );
+					expect(event.body.event.description).toBe(
+						'This is the updated description from a patch event'
+					);
 				});
 		});
 	});
@@ -177,6 +178,29 @@ describe('error testing', () => {
 				.expect(400)
 				.then((res) => {
 					expect(res.body.msg).toBe('information missing');
+				});
+		});
+	});
+	describe('PATCH events errors', () => {
+		test('404: wrong username sent', () => {
+			return request(app)
+				.patch('/api/events/1')
+				.send({
+					author: 'OJ',
+					description: 'this is not updated',
+				})
+				.expect(404)
+				.then((event) => {
+					expect(event.body.msg).toBe('event not found');
+				});
+		});
+		test('404: incorrect event_id', () => {
+			return request(app)
+				.patch('/api/events/100')
+				.send({ author: 'OJ', description: 'testing, testing' })
+				.expect(404)
+				.then((event) => {
+					expect(event.body.msg).toBe('event not found');
 				});
 		});
 	});

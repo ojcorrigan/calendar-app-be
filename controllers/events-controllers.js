@@ -1,4 +1,8 @@
-const { selectEvents, insertEvent } = require('../models/events-models');
+const {
+	selectEvents,
+	insertEvent,
+	updateEvent,
+} = require('../models/events-models');
 
 exports.getEvents = (req, res, next) => {
 	selectEvents().then((events) => {
@@ -11,6 +15,19 @@ exports.postEvent = (req, res, next) => {
 	insertEvent(eventInfo)
 		.then((event) => {
 			res.status(201).send({ event });
+		})
+		.catch((err) => {
+			next(err);
+		});
+};
+
+exports.patchEvent = (req, res, next) => {
+	const { event_id } = req.params;
+	const eventInfo = req.body;
+
+	updateEvent(eventInfo, event_id)
+		.then((event) => {
+			res.status(200).send({ event });
 		})
 		.catch((err) => {
 			next(err);

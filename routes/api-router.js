@@ -6,6 +6,4 @@ apiRouter.use('/users', usersRouter);
 
 apiRouter.use('/events', eventsRouter);
 
-// apiRouter.use('/events', topicsRouter);
-
 module.exports = apiRouter;
